@@ -37,7 +37,7 @@
 
 [ ] GitHub OAuth 연동
 
-[ ] 작성한 Writeup을 지정한 GitHub 레포지토리로 자동 Commit/Push 기능
+[x] 작성한 Writeup을 지정한 GitHub 레포지토리로 자동 Commit/Push 기능
 
 ---
 
