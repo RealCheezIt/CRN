@@ -56,6 +56,7 @@ CRN/
 │   │   ├── _init_.py       
 │   │   └── notes.py         # 오답노트 작성, 조회, MD 내보내기 라우트
 │   ├── utils/
+│   │   ├── github.py
 │   │   └── md.py            # 마크다운 변환 유틸리티
 │   ├── _init_.py  
 │   ├── config.py            # 환경변수 및 기본 설정
