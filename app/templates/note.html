@@ -17,33 +17,34 @@
 <div class="container">
     <h2 class="header-title">오답 노트 작성</h2>
     
-    <form action="/save_note" method="POST">
+<form action="{{ url_for('notes.edit_note', note_id=note[0]) if note else url_for('notes.save_note') }}" method="POST">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-    
+
     <div class="mb-3">
         <label for="problemName" class="form-label">문제 이름</label>
-        <input type="text" class="form-control" name="title" id="problemName" placeholder="예: SQL Injection Advanced" required>
+        <input type="text" class="form-control" name="title" id="problemName"
+               value="{{ note[2] if note else '' }}" required>
     </div>
 
     <div class="mb-3">
         <label class="form-label">카테고리</label>
-        <select class="form-select" name="category" id="category" required>
-            <option value="" selected disabled>카테고리를 선택하세요</option>
-            <option value="web">Web</option>
-            <option value="pwn">Pwnable</option>
-            <option value="crypto">Crypto</option>
-            <option value="rev">Reversing</option>
-            <option value="misc">Misc</option>
+        <select class="form-select" name="category" required>
+            <option value="" {% if not note %}selected{% endif %} disabled>카테고리를 선택하세요</option>
+            <option value="web" {% if note and note[3] == 'web' %}selected{% endif %}>Web</option>
+            <option value="pwn" {% if note and note[3] == 'pwn' %}selected{% endif %}>Pwnable</option>
+            <option value="crypto" {% if note and note[3] == 'crypto' %}selected{% endif %}>Crypto</option>
+            <option value="rev" {% if note and note[3] == 'rev' %}selected{% endif %}>Reversing</option>
+            <option value="misc" {% if note and note[3] == 'misc' %}selected{% endif %}>Misc</option>
         </select>
     </div>
 
     <div class="mb-3">
         <label for="learned" class="form-label">배운 점 및 메모</label>
-        <textarea class="form-control" name="content" id="learned" rows="5" placeholder="풀이 과정이나 배운 점을 적어주세요."></textarea>
+        <textarea class="form-control" name="content" rows="5">{{ note[4] if note else '' }}</textarea>
     </div>
 
     <div class="d-grid gap-2">
-        <button type="submit" class="btn btn-primary btn-lg">노트 저장하기</button>
+        <button type="submit" class="btn btn-primary btn-lg">{{ '수정하기' if note else '노트 저장하기' }}</button>
     </div>
 </form>
 </div>

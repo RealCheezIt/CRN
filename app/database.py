@@ -80,3 +80,15 @@ def get_note_by_id(note_id):
     row = cursor.fetchone()
     conn.close()
     return row
+
+
+def edit_note(note_id, user_id, title, category, content):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute('''
+    UPDATE notes
+    SET title = ?, category = ?, content = ?
+    WHERE idx = ? AND user_id = ?
+    ''', (title, category, content, note_id, user_id))
+    conn.commit()
+    conn.close()

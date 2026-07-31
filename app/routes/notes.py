@@ -7,11 +7,11 @@ from app.utils.github import push_to_github
 
 notes_bp = Blueprint('notes', __name__)
 
-@notes_bp.route('/note') # 노트 페이지
-def note_page(): # 노트페이지 함수
-    if 'user_id' not in session: #만약 유저아이디가 세션에 없다면
-        return redirect(url_for('auth.show_login_page')) # 인증 미들웨어 부분, 만약 유저 아이디 없을시 로그인 페이지로 안내
-    return render_template('note.html')  #note.html 파일 렌더링
+@notes_bp.route('/note')
+def note_page():
+    if 'user_id' not in session:
+        return redirect(url_for('auth.show_login_page'))
+    return render_template('note.html', note=None)
 
 @notes_bp.route('/save_note', methods=['POST']) # 노트 저장을 눌렀을때 실행 되는 라우트
 def save_note(): # 노트 저장 함수
@@ -21,7 +21,7 @@ def save_note(): # 노트 저장 함수
 
     user_id = session.get('user_id') # 세션에서 유저 아이디 가져오기 
     if not user_id: # 만약 세션에 유저 아이디가 없으면
-        return redirect(url_for('auth.show_login_page'))  # 인증 미들웨어 2, 로그인 페이지로 안내
+        return redirect(url_for('auth.show_login_page'))  # 인증 미들웨어
 
     database.save_note(user_id, title, category, content) # 데이터베이스에 저장
     return redirect(url_for('notes.show_my_notes'))# 저장 후 내 노트 페이지로 이동
@@ -55,3 +55,27 @@ def push_github(note_id):
     note = database.get_note_by_id(note_id)
     success = push_to_github(note)
     return redirect(url_for('notes.show_my_notes'))
+
+
+
+@notes_bp.route('/note/<int:note_id>/edit', methods=['GET', 'POST'])
+def edit_note(note_id):
+    # 인증 미들웨어
+    if 'user_id' not in session:
+        return redirect(url_for('auth.show_login_page'))
+
+    user_id = session.get('user_id')
+    # 수정 완료 버튼 눌러서 데이터 전송 [POST]
+    if request.method == 'POST':
+        title = request.form.get('title')
+        category = request.form.get('category')
+        content = request.form.get('content')
+        # 내용 수정
+        database.edit_note(note_id, user_id, title, category, content)
+        return redirect(url_for('notes.show_my_notes'))
+
+    # GET일 땐 기존 값 채워서 폼 보여주기
+    note = database.get_note_by_id(note_id)
+    return render_template('note.html', note=note)
+
+
