@@ -78,4 +78,3 @@ def edit_note(note_id):
     note = database.get_note_by_id(note_id)
     return render_template('note.html', note=note)
 
-

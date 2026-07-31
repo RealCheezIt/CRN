@@ -44,3 +44,5 @@ def logout():
     session.pop('user_id', None) # 세션에서 로그인 증명서(user_id)를 파기한다(pop) None은 기본값으로, 만약 user_id가 세션에 없으면 아무 일도 안 일어나게 함
     return redirect(url_for('auth.show_login_page')) # 'auth' 파일의 'show_login_page' 함수 주소로 강제 이동(리디렉트)시킨다 - 멱살잡이
 
+
+
