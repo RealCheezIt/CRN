@@ -92,3 +92,12 @@ def edit_note(note_id, user_id, title, category, content):
     ''', (title, category, content, note_id, user_id))
     conn.commit()
     conn.close()
+
+
+def delete_note(note_id, user_id):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM notes WHERE idx=? AND user_id=?', (note_id, user_id))
+    conn.commit()
+    conn.close()
+

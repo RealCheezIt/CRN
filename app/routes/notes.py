@@ -78,3 +78,13 @@ def edit_note(note_id):
     note = database.get_note_by_id(note_id)
     return render_template('note.html', note=note)
 
+
+@notes_bp.route('/note/<int:note_id>/delete', methods=['POST'])
+def delete_note(note_id):
+    if 'user_id' not in session:
+        return redirect(url_for('auth.show_login_page'))
+    user_id = session.get('user_id')
+    database.delete_note(note_id, user_id)
+    return redirect(url_for('notes.show_my_notes'))
+
+
