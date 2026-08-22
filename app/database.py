@@ -25,6 +25,20 @@ def init_db():
         FOREIGN KEY(user_id) REFERENCES users(id)
     )
     ''')
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS tags (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT UNIQUE NOT NULL
+    )
+    ''')
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS note_tags (
+        note_id INTEGER,
+        tag_id INTEGER,
+        FOREIGN KEY(note_id) REFERENCES notes(idx),
+        FOREIGN KEY(tag_id) REFERENCES tags(id),
+        PRIMARY KEY(note_id, tag_id))
+        ''')
     conn.commit()
     conn.close()
 
