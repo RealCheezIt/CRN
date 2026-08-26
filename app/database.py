@@ -115,3 +115,60 @@ def delete_note(note_id, user_id):
     conn.commit()
     conn.close()
 
+
+
+def get_or_create_tag(tag_name):
+    """태그 이름으로 찾고, 없으면 새로 만들고, 어느 쪽이든 id를 리턴"""
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute('SELECT id FROM tags WHERE name = ?', (tag_name,))
+    row = cursor.fetchone()
+    if row:
+        conn.close()
+        return row[0]
+    cursor.execute('INSERT INTO tags (name) VALUES (?)', (tag_name,))
+    conn.commit()
+    tag_id = cursor.lastrowid
+    conn.close()
+    return tag_id
+
+
+def save_note_tags(note_id, tag_names):
+    """노트 하나에 태그 여러 개 연결"""
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    for name in tag_names:
+        name = name.strip()
+        if not name:
+            continue
+        tag_id = get_or_create_tag(name)
+        cursor.execute(
+            'INSERT OR IGNORE INTO note_tags (note_id, tag_id) VALUES (?, ?)',
+            (note_id, tag_id)
+        )
+    conn.commit()
+    conn.close()
+
+
+def get_tags_for_note(note_id):
+    """노트 하나에 붙은 태그 이름들 리스트로 리턴"""
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute('''
+        SELECT tags.name FROM tags
+        JOIN note_tags ON tags.id = note_tags.tag_id
+        WHERE note_tags.note_id = ?
+    ''', (note_id,))
+    rows = cursor.fetchall()
+    conn.close()
+    return [row[0] for row in rows]
+
+
+def clear_note_tags(note_id):
+    """노트 수정 시 기존 태그 연결 다 지우고 새로 붙이기 위한 초기화"""
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM note_tags WHERE note_id = ?', (note_id,))
+    conn.commit()
+    conn.close()
+
