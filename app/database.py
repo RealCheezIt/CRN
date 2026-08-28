@@ -181,6 +181,7 @@ def get_last_note_id(user_id):
         'SELECT idx FROM notes WHERE user_id = ? ORDER BY idx DESC LIMIT 1', (user_id,)
     )
     
+    
 
     row = cursor.fechone()
     conn.close()
