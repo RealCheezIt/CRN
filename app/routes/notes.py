@@ -84,7 +84,8 @@ def edit_note(note_id):
 
         databas.update_note(note_id, user_id, title, category, content)  
         databs.clear_note_tags(note_id)
-        database.save_note_tags
+        database.save_note_tags(note_id, tags_input.split(','))
+        
 
 
 
@@ -94,7 +95,8 @@ def edit_note(note_id):
 
     # GET일 땐 기존 값 채워서 폼 보여주기
     note = database.get_note_by_id(note_id)
-    return render_template('note.html', note=note)
+    note_tags = database.get_note_tags(note_id)
+    return render_template('note.html', note=note, tags=note_tags)
 
 
 @notes_bp.route('/note/<int:note_id>/delete', methods=['POST'])
@@ -106,3 +108,24 @@ def delete_note(note_id):
     return redirect(url_for('notes.show_my_notes'))
 
 
+
+
+@notes_bp.route('/note')
+def note_page():
+    if 'user_id' not in session:
+        return redirect(url_for('auth.show_login_page'))
+    return render_template('note.html', note=None, note_tags=[])
+
+
+    @notes_bp.route('/my_note')
+    def show_my_notes():
+        if 'user_id' not in session:
+            return redirect(url_for('auth.show_login_page'))
+            current_user = session.get('user_id')
+            user_notes = database.get_my_notes(current_user)
+
+
+            notes_with_tags = [(note, database.get_note_tags(note[0])) for note in user_notes]
+            return render_template('my_notes.html', notes=notes_with_tags, user=current_user)
+            
+            
