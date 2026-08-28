@@ -17,13 +17,23 @@ def note_page():
 def save_note(): # 노트 저장 함수
     title = request.form.get('title') # html 파일 내에 form 태그에서 타이틀,
     category = request.form.get('category')# 카테고리,
-    content = request.form.get('content') # 내용 가져오기
+    content = request.form.get('content')  # 내용 가져오기
+    tags_input = request.form.get('tags', '') #newwwwwwww
+
+
 
     user_id = session.get('user_id') # 세션에서 유저 아이디 가져오기 
     if not user_id: # 만약 세션에 유저 아이디가 없으면
         return redirect(url_for('auth.show_login_page'))  # 인증 미들웨어
 
-    database.save_note(user_id, title, category, content) # 데이터베이스에 저장
+    database.save_note(user_id, title, category, content)  # 데이터베이스에 저장
+    conn_note_id = database.get_last_note_id(user_id)
+    tag_names = tags_input.split(',')
+    database.save_note_tags(conn_note_id, tag_names)
+
+
+
+
     return redirect(url_for('notes.show_my_notes'))# 저장 후 내 노트 페이지로 이동
 
 @notes_bp.route('/my_notes') # 내 노트 페이지
@@ -70,6 +80,14 @@ def edit_note(note_id):
         title = request.form.get('title')
         category = request.form.get('category')
         content = request.form.get('content')
+        tags_input = request.form.get('tags', '')  # oh yeah new one
+
+        databas.update_note(note_id, user_id, title, category, content)  
+        databs.clear_note_tags(note_id)
+        database.save_note_tags
+
+
+
         # 내용 수정
         database.edit_note(note_id, user_id, title, category, content)
         return redirect(url_for('notes.show_my_notes'))

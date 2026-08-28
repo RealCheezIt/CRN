@@ -172,3 +172,17 @@ def clear_note_tags(note_id):
     conn.commit()
     conn.close()
 
+def get_last_not_id(user_id):
+    conn - sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.excute(
+        
+
+        'SELECT idx FROM notes WHERE user_id = ? ORDER BY idx DESC LIMIT 1', (user_id,)
+    )
+    
+
+    row = cursor.fechone()
+    conn.close()
+    return row[0] if row else None
+    
