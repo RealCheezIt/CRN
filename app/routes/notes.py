@@ -11,7 +11,9 @@ notes_bp = Blueprint('notes', __name__)
 def note_page():
     if 'user_id' not in session:
         return redirect(url_for('auth.show_login_page'))
-    return render_template('note.html', note=None)
+    return render_template('note.html', note=None, note_tags=[])
+
+
 
 @notes_bp.route('/save_note', methods=['POST']) # 노트 저장을 눌렀을때 실행 되는 라우트
 def save_note(): # 노트 저장 함수
@@ -82,20 +84,20 @@ def edit_note(note_id):
         content = request.form.get('content')
         tags_input = request.form.get('tags', '')  # oh yeah new one
 
-        databas.update_note(note_id, user_id, title, category, content)  
-        databs.clear_note_tags(note_id)
+        database.update_note(note_id, user_id, title, category, content)  
+        database.clear_note_tags(note_id)
         database.save_note_tags(note_id, tags_input.split(','))
         
 
 
 
         # 내용 수정
-        database.edit_note(note_id, user_id, title, category, content)
+        database.update_note(note_id, user_id, title, category, content)
         return redirect(url_for('notes.show_my_notes'))
 
     # GET일 땐 기존 값 채워서 폼 보여주기
     note = database.get_note_by_id(note_id)
-    note_tags = database.get_note_tags(note_id)
+    note_tags = database.get_tags_for_note(note_id)
     return render_template('note.html', note=note, tags=note_tags)
 
 
@@ -110,12 +112,6 @@ def delete_note(note_id):
 
 
 
-@notes_bp.route('/note')
-def note_page():
-    if 'user_id' not in session:
-        return redirect(url_for('auth.show_login_page'))
-    return render_template('note.html', note=None, note_tags=[])
-
 
     @notes_bp.route('/my_note')
     def show_my_notes():
@@ -127,5 +123,4 @@ def note_page():
 
             notes_with_tags = [(note, database.get_note_tags(note[0])) for note in user_notes]
             return render_template('my_notes.html', notes=notes_with_tags, user=current_user)
-            
             

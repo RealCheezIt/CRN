@@ -96,7 +96,7 @@ def get_note_by_id(note_id):
     return row
 
 
-def edit_note(note_id, user_id, title, category, content):
+def update_note(note_id, user_id, title, category, content):  # edit_note → update_note로 변경
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute('''
@@ -106,7 +106,6 @@ def edit_note(note_id, user_id, title, category, content):
     ''', (title, category, content, note_id, user_id))
     conn.commit()
     conn.close()
-
 
 def delete_note(note_id, user_id):
     conn = sqlite3.connect(DB_PATH)
@@ -175,14 +174,14 @@ def clear_note_tags(note_id):
 def get_last_note_id(user_id):
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
-    cursor.excute(
+    cursor.execute(
         
 
         'SELECT idx FROM notes WHERE user_id = ? ORDER BY idx DESC LIMIT 1', (user_id,)
     )
     
-    
 
-    row = cursor.fechone()
+
+    row = cursor.fetchone()
     conn.close()
     return row[0] if row else None
