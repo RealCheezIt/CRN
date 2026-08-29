@@ -47,6 +47,15 @@
     </div>
 
     <div class="mb-3">
+        <label for="tags" class="form-label">태그 (쉼표로 구분)</label>
+        <input type="text" class="form-control" name="tags" id="tags"
+               value="{{ note_tags | join(', ') if note_tags else '' }}"
+               placeholder="예: 기드라, 정적분석, PE파일">
+    
+        </select>
+    </div>
+
+    <div class="mb-3">
         <label for="learned" class="form-label">배운 점 및 메모</label>
         <textarea class="form-control" name="content" rows="5">{{ note[4] if note else '' }}</textarea>
     </div>

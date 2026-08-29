@@ -116,31 +116,24 @@ def delete_note(note_id, user_id):
 
 
 
-def get_or_create_tag(tag_name):
-    """태그 이름으로 찾고, 없으면 새로 만들고, 어느 쪽이든 id를 리턴"""
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
+def get_or_create_tag(cursor, tag_name):
+    """연결을 새로 열지 않고, 밖에서 받은 cursor를 그대로 씀"""
     cursor.execute('SELECT id FROM tags WHERE name = ?', (tag_name,))
     row = cursor.fetchone()
     if row:
-        conn.close()
         return row[0]
     cursor.execute('INSERT INTO tags (name) VALUES (?)', (tag_name,))
-    conn.commit()
-    tag_id = cursor.lastrowid
-    conn.close()
-    return tag_id
+    return cursor.lastrowid
 
 
 def save_note_tags(note_id, tag_names):
-    """노트 하나에 태그 여러 개 연결"""
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     for name in tag_names:
         name = name.strip()
         if not name:
             continue
-        tag_id = get_or_create_tag(name)
+        tag_id = get_or_create_tag(cursor, name)   # ← 같은 cursor 넘겨줌
         cursor.execute(
             'INSERT OR IGNORE INTO note_tags (note_id, tag_id) VALUES (?, ?)',
             (note_id, tag_id)

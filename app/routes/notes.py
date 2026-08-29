@@ -36,6 +36,8 @@ def save_note(): # 노트 저장 함수
 
 
 
+
+
     return redirect(url_for('notes.show_my_notes'))# 저장 후 내 노트 페이지로 이동
 
 @notes_bp.route('/my_notes') # 내 노트 페이지
@@ -124,3 +126,5 @@ def delete_note(note_id):
             notes_with_tags = [(note, database.get_note_tags(note[0])) for note in user_notes]
             return render_template('my_notes.html', notes=notes_with_tags, user=current_user)
             
+
+
