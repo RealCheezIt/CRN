@@ -14,6 +14,10 @@ def sign_up():
     nickname = request.form.get('user_id') 
     password = request.form.get('user_pw') 
 
+    if not nickname or not password:
+        return "<h4>닉네임과 비밀번호를 모두 입력해주세요.</h4>"
+
+
     if database.register_user(nickname, password): # 데이터 베이스 안에 등록된 유저(닉네임, 비밀번호)가 없으면 true(회원 가입 성공문) 있으면 (false) 라면 이미 있는 아이디라고 반환
         return f"<h4>{nickname}님 가입 성공! <a href='/login_page'>로그인하러 가기</a></h4>"
          # !self-XSS 나중에 템플릿화 하기! true 일때

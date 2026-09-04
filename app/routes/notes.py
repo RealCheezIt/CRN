@@ -89,7 +89,7 @@ def edit_note(note_id):
         database.update_note(note_id, user_id, title, category, content)  
         database.clear_note_tags(note_id)
         database.save_note_tags(note_id, tags_input.split(','))
-        
+
 
 
 
@@ -112,13 +112,16 @@ def delete_note(note_id):
     return redirect(url_for('notes.show_my_notes'))
 
 
-@notes_bp.route('/my_notes')
-def show_my_notes():
-    if 'user_id' not in session:
-        return redirect(url_for('auth.show_login_page'))
-    current_user = session.get('user_id')
-    user_notes = database.get_my_notes(current_user)
-    notes_with_tags = [(note, database.get_tags_for_note(note[0])) for note in user_notes]
-    return render_template('my_notes.html', notes=notes_with_tags, user=current_user)
 
 
+# 얜 대체 뭐임
+    @notes_bp.route('/my_note')
+    def show_my_notes():
+        if 'user_id' not in session:
+            return redirect(url_for('auth.show_login_page'))
+            current_user = session.get('user_id')
+            user_notes = database.get_my_notes(current_user)
+
+
+            notes_with_tags = [(note, database.get_note_tags(note[0])) for note in user_notes]
+            return render_template('my_notes.html', notes=notes_with_tags, user=current_user)
