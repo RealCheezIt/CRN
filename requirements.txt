@@ -3,4 +3,4 @@ flask-wtf
 python-dotenv
 werkzeug
 
-# 이게 설치 가이드임 이 라이브러리들 필요하다는 뜻!
+#  시큐어 코드 ㅇㄹㄴ 작동 안하자나 
