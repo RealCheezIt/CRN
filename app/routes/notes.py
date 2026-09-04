@@ -113,18 +113,17 @@ def delete_note(note_id):
 
 
 
+# 와 이걸 못 보네 ㄹㅈㄷ 
+@notes_bp.route('/my_note')
+def show_my_notes():
+    if 'user_id' not in session:
+        return redirect(url_for('auth.show_login_page'))
+    current_user = session.get('user_id')
+    user_notes = database.get_my_notes(current_user)
 
 
-    @notes_bp.route('/my_note')
-    def show_my_notes():
-        if 'user_id' not in session:
-            return redirect(url_for('auth.show_login_page'))
-            current_user = session.get('user_id')
-            user_notes = database.get_my_notes(current_user)
-
-
-            notes_with_tags = [(note, database.get_note_tags(note[0])) for note in user_notes]
-            return render_template('my_notes.html', notes=notes_with_tags, user=current_user)
+    notes_with_tags = [(note, database.get_note_tags(note[0])) for note in user_notes]
+    return render_template('my_notes.html', notes=notes_with_tags, user=current_user)
             
 
 
