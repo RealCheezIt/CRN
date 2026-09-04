@@ -3,7 +3,7 @@
 **First Web Project :D**
 
 > **Fast, Safe, and Markdown-based CTF Writeup Management System**
->  CTF 문제를 풀며 작성하는 빠른 로컬 저장 및 마크다운 기반의 오답노트 웹 애플리케이션입니다.
+>  CTF 문제를 풀며 작성하는 빠른 로컬 저장 및 마크다운 기반의 오답노트 웹 애플리케이션입니다. (아직 MVP 단계)
 
 기존 DreamHack 사이트, CTF Time 내장 ctf 랏업 기능을 써보며 불편한 점과 많은 분들이 티스토리나 노션에 많이 기록 한다는 사실을 알게 돼
 단점을 보완한 웹 서비스를 만들고자 시작했습니다
