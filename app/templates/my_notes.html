@@ -22,6 +22,8 @@
         </div>
         <a href="{{ url_for('notes.export_note', note_id=note[0]) }}" class="btn btn-sm btn-outline-secondary">MD로 내보내기</a>
         <a href="{{ url_for('notes.edit_note', note_id=note[0]) }}" class="btn btn-sm btn-outline-primary">수정</a>
+        <a href="{{ url_for('auth.github_login') }}" class="btn btn-outline-dark mb-3">GitHub 계정 연결하기</a>
+        <a href="{{ url_for('auth.set_github_repo') }}" class="btn btn-outline-secondary mb-3">푸시할 레포 설정</a>
         <form action="{{ url_for('notes.push_github', note_id=note[0]) }}" method="POST" style="display:inline;">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <button type="submit" class="btn btn-sm btn-outline-dark">GitHub에 푸시</button>

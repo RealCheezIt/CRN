@@ -67,7 +67,8 @@ def export_note(note_id):
 @notes_bp.route('/note/<int:note_id>/push_github', methods=['POST'])
 def push_github(note_id):
     note = database.get_note_by_id(note_id)
-    success = push_to_github(note)
+    user_id = session.get('user_id')
+    success = push_to_github(note, user_id)
     return redirect(url_for('notes.show_my_notes'))
 
 

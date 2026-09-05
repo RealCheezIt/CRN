@@ -1,6 +1,10 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session
 from app import database
 
+import requests 
+from app.config import Config
+
+
 auth_bp = Blueprint('auth', __name__)
 
 @auth_bp.route('/') # 첫화면 렌더링
@@ -48,5 +52,62 @@ def logout():
     session.pop('user_id', None) # 세션에서 로그인 증명서(user_id)를 파기한다(pop) None은 기본값으로, 만약 user_id가 세션에 없으면 아무 일도 안 일어나게 함
     return redirect(url_for('auth.show_login_page')) # 'auth' 파일의 'show_login_page' 함수 주소로 강제 이동(리디렉트)시킨다 - 멱살잡이
 
+@auth_bp.route('/github/login')
+def github_login():
+    if 'user_id' not in session:
+        return redirect(url_for('auth.show_login_page'))
+    github_auth_url = (
+        f"https://github.com/login/oauth/authorize"
+        f"?client_id={Config.GITHUB_CLIENT_ID}"
+        f"&scope=repo"
+        f"&redirect_uri=http://localhost:5000/github/callback"
+    )
+    return redirect(github_auth_url)
 
 
+@auth_bp.route('/github/callback')
+def github_callback():
+    code = request.args.get('code')
+    if not code:
+        return "인증 실패", 400
+    token_res = requests.post(
+        'https://github.com/login/oauth/access_token',
+        headers={'Accept': 'application/json'},
+        data={
+            'client_id': Config.GITHUB_CLIENT_ID,
+            'client_secret': Config.GITHUB_CLIENT_SECRET,
+            'code': code,
+        }
+    )
+    token_data = token_res.json()
+    github_token = token_data.get('access_token')
+
+    if not github_token:
+        return "토큰 발급 실패", 400
+
+    user_res = requests.get(
+        'https://api.github.com/user',
+        headers={'Authorization': f'token {github_token}'}
+    )
+    github_username = user_res.json().get('login')
+
+    user_id = session.get('user_id')
+    database.save_github_info(user_id, github_token, github_username)
+
+    return redirect(url_for('notes.show_my_notes'))
+
+
+
+@auth_bp.route('/github/set_repo', methods=['GET', 'POST'])
+def set_github_repo():
+    if 'user_id' not in session:
+        return redirect(url_for('auth.show_login_page'))
+
+    user_id = session.get('user_id')
+
+    if request.method == 'POST':
+        repo_name = request.form.get('repo_name')  
+        database.save_github_repo(user_id, repo_name)
+        return redirect(url_for('notes.show_my_notes'))
+
+    return render_template('set_repo.html')

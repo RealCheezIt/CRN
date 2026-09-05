@@ -18,12 +18,17 @@ def init_db():
 
     try:
         cursor.execute('ALTER TABLE users ADD COLUMN github_token TEXT')
+        
     except sqlite3.OperationalError:
         pass
     try:
         cursor.execute('ALTER TABLE users ADD COLUMN github_username TEXT')
     except sqlite3.OperationalError:
         pass
+    try:
+        cursor.execute('ALTER TABLE users ADD COLUMN github_repo TEXT')
+    except sqlite3.OperationalError:
+        pass    
 
 
     cursor.execute('''
@@ -53,6 +58,17 @@ def init_db():
         ''')
     conn.commit()
     conn.close()
+
+
+
+# 아 토큰 왜 지움;
+def get_github_token(user_id):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute('select github_token FROM users WHERE id = ?', (user_id,))
+    row = cursor.fetchone()
+    conn.close()
+    return row[0] if row else None
 
 
 def register_user(user_id, user_pw):
@@ -203,14 +219,22 @@ def save_github_info(user_id, github_token, github_username):
     )
 
     conn.commit()
-    conn.closee()
+    conn.close()
 
 
-
-def get_github_token(user_id):
+def save_github_repo(user_id, repo_name):
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
-    cursor.execute('select github_token FROM users WHERE id = ?', (user_id,))
+    cursor.execute('UPDATE users SET github_repo=? WHERE id=?', (repo_name, user_id))
+    conn.commit()
+    conn.close()
+
+
+def get_github_repo(user_id):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute('SELECT github_repo FROM users WHERE id=?', (user_id,))
     row = cursor.fetchone()
     conn.close()
     return row[0] if row else None
+
