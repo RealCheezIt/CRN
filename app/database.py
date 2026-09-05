@@ -5,15 +5,27 @@ from app.config import Config
 DB_PATH = Config.DATABASE_PATH
 
 def init_db():
-    """앱 시작할 때 딱 한 번 호출해서 테이블 만드는 함수"""
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS users (
         id TEXT PRIMARY KEY,
-        pw TEXT NOT NULL
+        pw TEXT NOT NULL,
+        github_token TEXT,
+        github_username TEXT
     )
     ''')
+
+    try:
+        cursor.execute('ALTER TABLE users ADD COLUMN github_token TEXT')
+    except sqlite3.OperationalError:
+        pass
+    try:
+        cursor.execute('ALTER TABLE users ADD COLUMN github_username TEXT')
+    except sqlite3.OperationalError:
+        pass
+
+
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS notes (
         idx INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -178,3 +190,15 @@ def get_last_note_id(user_id):
     row = cursor.fetchone()
     conn.close()
     return row[0] if row else None
+
+def save_github_info(user_id, github_token, github_username):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute(
+        'update users set github_token = ?, github_username=? where id = ?',
+        (github_token, github_username, user_id)
+
+    )
+
+    conn.commit()
+    conn.closee()
