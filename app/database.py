@@ -191,6 +191,8 @@ def get_last_note_id(user_id):
     conn.close()
     return row[0] if row else None
 
+
+# NEW
 def save_github_info(user_id, github_token, github_username):
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
@@ -202,3 +204,13 @@ def save_github_info(user_id, github_token, github_username):
 
     conn.commit()
     conn.closee()
+
+
+
+def get_github_token(user_id):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute('select github_token FROM users WHERE id = ?', (user_id,))
+    row = cursor.fetchone()
+    conn.close()
+    return row[0] if row else None
