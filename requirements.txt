@@ -3,3 +3,4 @@ flask-wtf
 python-dotenv
 werkzeug
 gunicorn==23.0.0
+requests
