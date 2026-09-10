@@ -2,5 +2,4 @@ flask
 flask-wtf
 python-dotenv
 werkzeug
-
-#  시큐어 코드 ㅇㄹㄴ 작동 안하자나 
+gunicorn==23.0.0

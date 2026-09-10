@@ -66,20 +66,7 @@
 </form>
 </div>
 <script>
-const textarea = document.getElementById('learned');
-const preview = document.getElementById('preview');
 
-function updatePreview() {
-    const rawHtml = marked.parse(textarea.value);
-    const cleanHtml = DOMPurify.sanitize(rawHtml);  // XSS 필터링
-    preview.innerHTML = cleanHtml;
-    preview.querySelectorAll('pre code').forEach((block) => {
-        hljs.highlightElement(block);  // 코드블록마다 하이라이팅 적용
-    });
-}
-
-textarea.addEventListener('input', updatePreview);
-updatePreview();  // 페이지 로드 시(수정 모드일 때 기존 내용) 한 번 실행
 </script>
 
 </body>
