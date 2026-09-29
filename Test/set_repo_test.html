@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub 레포 설정</title>
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+
+
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #246bfd 0%, #0047da 100%);
+            padding: 40px 24px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: fixed;
+            height: 100vh;
+        }
+
+        .main-content {
+            margin-left: 280px;
+            flex: 1;
+            padding: 50px 60px;
+            max-width: 900px;
+        }
+
+
+        .sidebar-brand h2 {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            line-height: 1.4;
+        }
+
+        .sidebar-brand span {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            display: block;
+            margin-top: 5px;
+        }
+
+
+        .btn-back-sidebar {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 10px 16px;
+            border-radius: 8px;
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.2s;
+        }
+        .btn-back-sidebar:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: white;
+        }
+
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #111111;
+        }
+
+
+        .settings-card {
+            background: white;
+            border-radius: 12px;
+            padding: 35px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+            border: 1px solid #e2e8f0;
+        }
+
+        .card-notice {
+            background-color: #f0f7ff;
+            border-left: 4px solid #246bfd;
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 25px;
+            font-size: 13px;
+            color: #1e3a8a;
+            line-height: 1.5;
+        }
+
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            font-size: 14px;
+            font-weight: 700;
+            color: #334155;
+        }
+
+        input {
+            width: 100%;
+            height: 48px;
+            padding: 0 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #1a202c;
+            background-color: #f8fafc;
+            transition: all 0.2s ease-in-out;
+            outline: none;
+        }
+
+        input::placeholder {
+            color: #cbd5e1;
+        }
+
+        input:focus {
+            background-color: #ffffff;
+            border-color: #246bfd;
+            box-shadow: 0 0 0 3px rgba(36, 107, 253, 0.15);
+        }
+
+
+        .btn-submit {
+            height: 48px;
+            background-color: #246bfd;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            padding: 0 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-submit:hover {
+            background-color: #1a56cc;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <h2>연동 설정</h2>
+            <span>GitHub 저장소 관리</span>
+        </div>
+
+
+        <a href="javascript:history.back();" class="btn-back-sidebar">⬅️ 목록으로 돌아가기</a>
+    </div>
+
+
+    <div class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">GitHub 레포 지정</h1>
+        </div>
+
+
+        <div class="settings-card">
+            <div class="card-notice">
+                 <strong>안내:</strong> 작성하신 오답노트 파일(.md)이 자동으로 푸시될 저장소 이름입니다. 권한이 있는 정확한 레포지토리 경로를 입력해 주세요.
+            </div>
+
+
+            <form method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                <div class="form-group">
+                    <label class="form-label">레포 이름 (형식: 아이디/레포이름)</label>
+                    <input type="text" name="repo_name" placeholder="예: amyyu/writeups" required autocomplete="off">
+                </div>
+
+                <button type="submit" class="btn-submit">설정 저장하기</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
