@@ -16,14 +16,14 @@
         body {
             display: flex;
             min-height: 100vh;
-            background-color: #f8fafc;
-            color: #1e293b;
+            background-color: #02182b;
+            color: #f1f5f9;
         }
 
 
         .sidebar {
             width: 280px;
-            background: linear-gradient(180deg, #246bfd 0%, #0047da 100%);
+            background: linear-gradient(180deg, #d7263d 0%, #8a1323 100%);
             padding: 40px 24px;
             color: white;
             display: flex;
@@ -46,10 +46,11 @@
             font-weight: 800;
             letter-spacing: -0.5px;
             line-height: 1.4;
+            color: #ffffff;
         }
 
         .sidebar-brand span {
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(255, 255, 255, 0.8);
             font-size: 14px;
             display: block;
             margin-top: 5px;
@@ -66,12 +67,12 @@
             padding: 10px 16px;
             border-radius: 8px;
             color: white;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             transition: all 0.2s;
         }
         .btn-back-sidebar:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.25);
             border-color: white;
         }
 
@@ -83,26 +84,26 @@
         .page-title {
             font-size: 24px;
             font-weight: 700;
-            color: #111111;
+            color: #ffffff;
         }
 
 
         .settings-card {
-            background: white;
+            background: #09253e;
             border-radius: 12px;
             padding: 35px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
-            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border: 1px solid #143554;
         }
 
         .card-notice {
-            background-color: #f0f7ff;
-            border-left: 4px solid #246bfd;
+            background-color: rgba(215, 38, 61, 0.12);
+            border-left: 4px solid #d7263d;
             padding: 15px;
             border-radius: 0 8px 8px 0;
             margin-bottom: 25px;
             font-size: 13px;
-            color: #1e3a8a;
+            color: #f8fafc;
             line-height: 1.5;
         }
 
@@ -117,36 +118,36 @@
         .form-label {
             font-size: 14px;
             font-weight: 700;
-            color: #334155;
+            color: #cbd5e1;
         }
 
         input {
             width: 100%;
             height: 48px;
             padding: 0 16px;
-            border: 1px solid #e2e8f0;
+            border: 1px solid #1e3a5f;
             border-radius: 8px;
             font-size: 14px;
-            color: #1a202c;
-            background-color: #f8fafc;
+            color: #ffffff;
+            background-color: #02182b;
             transition: all 0.2s ease-in-out;
             outline: none;
         }
 
         input::placeholder {
-            color: #cbd5e1;
+            color: #64748b;
         }
 
         input:focus {
-            background-color: #ffffff;
-            border-color: #246bfd;
-            box-shadow: 0 0 0 3px rgba(36, 107, 253, 0.15);
+            background-color: #02182b;
+            border-color: #d7263d;
+            box-shadow: 0 0 0 3px rgba(215, 38, 61, 0.25);
         }
 
 
         .btn-submit {
             height: 48px;
-            background-color: #246bfd;
+            background-color: #d7263d;
             color: white;
             border: none;
             border-radius: 8px;
@@ -161,7 +162,7 @@
         }
 
         .btn-submit:hover {
-            background-color: #1a56cc;
+            background-color: #b81d31;
         }
     </style>
 </head>
@@ -174,7 +175,7 @@
         </div>
 
 
-        <a href="javascript:history.back();" class="btn-back-sidebar">⬅️ 목록으로 돌아가기</a>
+        <a href="javascript:history.back();" class="btn-back-sidebar">목록으로 돌아가기</a>
     </div>
 
 
