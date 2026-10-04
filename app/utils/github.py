@@ -9,7 +9,13 @@ def push_to_github(note, user_id):
     token = database.get_github_token(user_id)
     repo = database.get_github_repo(user_id)
 
+
+
+    print("TOKEN:", token)   # 추가
+    print("REPO:", repo)
+
     if not token or not repo:
+        print("토큰 또는 레포 없음 — 중단")
         return False 
 
 
@@ -26,4 +32,6 @@ def push_to_github(note, user_id):
         "content": base64.b64encode(content.encode()).decode(),
     }
     res = requests.put(url, json=data, headers=headers)
+    print("STATUS:", res.status_code)  # 추가
+    print("BODY:", res.text)
     return res.status_code in (200, 201)

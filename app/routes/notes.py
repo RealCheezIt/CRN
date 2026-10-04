@@ -48,6 +48,9 @@ def show_my_notes(): # 내 노트 페이지 함수
     current_user = session.get('user_id') # 현재 유저
     user_notes = database.get_my_notes(current_user) # 그 현재 유저의 노트
 
+    notes_with_tags = [(note, database.get_tags_for_note(note[0])) for note in user_notes]
+    return render_template('my_notes.html', notes=notes_with_tags, user=current_user) # add
+
 
 
     return render_template('my_notes.html', notes=user_notes, user=current_user) # XSS 방지 부분 # # 내 노트 리스트에 위에서 선언 해뒀던 현재 유저와 현재 유저의 노트 같이 렌더링
