@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session
 from app import database
 
-import requests 
+import requests
 from app.config import Config
 
 
@@ -12,11 +12,11 @@ def home():
     '''홈 함수'''
     return render_template('signup.html') # 가장 첫 화면은 로그인 화면
 
-@auth_bp.route('/sign_up_test', methods=['POST']) 
+@auth_bp.route('/sign_up_test', methods=['POST'])
 def sign_up():
     '''회원가입 처리 함수'''
-    nickname = request.form.get('user_id') 
-    password = request.form.get('user_pw') 
+    nickname = request.form.get('user_id')
+    password = request.form.get('user_pw')
 
     if not nickname or not password:
         return "<h4>닉네임과 비밀번호를 모두 입력해주세요.</h4>"
@@ -30,23 +30,23 @@ def sign_up():
         # false 일때
 
 @auth_bp.route('/login_page')
-def show_login_page(): 
+def show_login_page():
     '''로그인 페이지 함수 (네이밍 고치기 - 좀 통일 좀 해라)'''
-    return render_template('login.html') 
+    return render_template('login.html')
 
 @auth_bp.route('/login_test', methods=['POST']) # 로그인 테스팅 하기 라우트!!
 def login_check():
     '''로그인 체크 함수'''
-    user_id = request.form.get('user_id') 
+    user_id = request.form.get('user_id')
     user_pw = request.form.get('user_pw')
 
     if database.check_login(user_id, user_pw): # 데이터 베이스 내에 아이디랑 비밀번호가 일치하면 true 반환, 아니면 false 반환 (패스워드 까지 검사 하고 온거임) 근데 네이밍 좀 바꿔라 check_login 부분좀;통일좀;
-        session['user_id'] = user_id # user_id <-(사용자가 입력한거) 가 세션에 저장 되고 그 세션이 user_id랑 일치하면 로그인 성공하게 함 
-        return redirect(url_for('notes.show_my_notes')) 
+        session['user_id'] = user_id # user_id <-(사용자가 입력한거) 가 세션에 저장 되고 그 세션이 user_id랑 일치하면 로그인 성공하게 함
+        return redirect(url_for('notes.show_my_notes'))
     else:
         return "<h3>아이디랑 비밀번호를 다시 확인해 주세요</h3>"
 
-@auth_bp.route('/logout') # 새로운 로그아웃 페이지 추가 
+@auth_bp.route('/logout') # 새로운 로그아웃 페이지 추가
 def logout():
     '''로그아웃 함수'''
     session.pop('user_id', None) # 세션에서 로그인 증명서(user_id)를 파기한다(pop) None은 기본값으로, 만약 user_id가 세션에 없으면 아무 일도 안 일어나게 함
@@ -106,7 +106,7 @@ def set_github_repo():
     user_id = session.get('user_id')
 
     if request.method == 'POST':
-        repo_name = request.form.get('repo_name')  
+        repo_name = request.form.get('repo_name')
         database.save_github_repo(user_id, repo_name)
         return redirect(url_for('notes.show_my_notes'))
 
