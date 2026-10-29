@@ -60,7 +60,8 @@ def github_login():
         f"https://github.com/login/oauth/authorize"
         f"?client_id={Config.GITHUB_CLIENT_ID}"
         f"&scope=repo"
-        f"&redirect_uri={Config.BASE_URL}/github/callback"
+        f"&redirect_uri=http://127.0.0.1:5000/github/callback"
+
     )
     return redirect(github_auth_url)
 
@@ -68,8 +69,9 @@ def github_login():
 @auth_bp.route('/github/callback')
 def github_callback():
     code = request.args.get('code')
-    if not code:
-        return "인증 실패", 400
+    if 'user_id' not in session:
+        return redirect(url_for('auth.show_login_page'))
+
     token_res = requests.post(
         'https://github.com/login/oauth/access_token',
         headers={'Accept': 'application/json'},
