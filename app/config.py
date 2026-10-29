@@ -8,3 +8,4 @@ class Config:
     DATABASE_PATH = os.environ.get('DATABASE_PATH', 'ctf_notes.db')  # 메모리에 지정된거 잇나 찾아보거라 없으면 걍 현재 디렉토리에 ctf_notes.db 파일 만들어라
     GITHUB_CLIENT_ID = os.environ.get('GITHUB_CLIENT_ID')
     GITHUB_CLIENT_SECRET = os.environ.get('GITHUB_CLIENT_SECRET')
+    BASE_URL = os.environ.get('BASE_URL', 'http://localhost:5000')

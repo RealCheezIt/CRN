@@ -60,7 +60,7 @@ def github_login():
         f"https://github.com/login/oauth/authorize"
         f"?client_id={Config.GITHUB_CLIENT_ID}"
         f"&scope=repo"
-        f"&redirect_uri=http://localhost:5000/github/callback"
+        f"&redirect_uri={Config.BASE_URL}/github/callback"
     )
     return redirect(github_auth_url)
 
