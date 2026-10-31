@@ -1,6 +1,6 @@
 # CTF 오답노트 (CRN)
 *My first web service btw👀*
-## **https://crn-lpiq.onrender.com**
+
 
 CTF(Capture The Flag) 문제를 풀고 난 뒤 풀이 과정과 배운 점을 기록하는 개인용 오답노트 웹 애플리케이션입니다. Flask와 SQLite로 제작되었으며, 보안 실습을 겸한 개인 프로젝트로 시작했습니다.
 
