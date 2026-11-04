@@ -1,4 +1,4 @@
-# CTF 오답노트 (CRN)
+# CRN
 *My first web service btw👀*
 
 
